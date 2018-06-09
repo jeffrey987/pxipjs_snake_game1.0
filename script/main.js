@@ -112,7 +112,11 @@ for (let index = 0; index < 3; index++) {
 app.stage.addChild(snake_body);
 let state;
 let cat;
-let size=24;
+let size = 24;
+let stopcat=new Object;
+stopcat.vx=0;
+stopcat.vy=0;
+
 drawHead();
 ///////draw food
 function drawHead() {
@@ -120,9 +124,9 @@ function drawHead() {
     //Define any variables that are used in more than one function
     cat = new PIXI.Graphics;
     cat.beginFill(0xffffff);
-    cat.drawCircle(84, 36, size/2);
-    cat.vx=0;
-    cat.vy=0;
+    cat.drawCircle(84, 36, size / 2);
+    cat.vx = 0;
+    cat.vy = 0;
     app.stage.addChild(cat);
 
     //Capture the keyboard arrow keys
@@ -130,13 +134,26 @@ function drawHead() {
         up = keyboard(38),
         right = keyboard(39),
         down = keyboard(40);
+    let space = keyboard(32);
+    space.press = () => {
 
+        if ( cat.vx ===0&&cat.vy===0) {
+            cat.vx=stopcat.vx;
+            cat.vy=stopcat.vy;
+            console.log(1);
+        }else{
+            console.log(2);
+            stopcat.vx=cat.vx;
+            stopcat.vy=cat.vy;
+            cat.vx = 0;
+            cat.vy = 0;
+        }
+    }
     //Left arrow key `press` method
     left.press = () => {
         //Change the cat's velocity when the key is pressed
         cat.vx = -3;
-        cat.vy = 0;   
-        
+        cat.vy = 0;
     };
     //Up
     up.press = () => {
@@ -152,7 +169,7 @@ function drawHead() {
 
     //Right
     right.press = () => {
-        cat.vx =3;
+        cat.vx = 3;
         cat.vy = 0;
         console.log('right');
     };
@@ -193,6 +210,6 @@ function play(delta) {
     //Use the cat's velocity to make it move
     cat.x += cat.vx;
     cat.y += cat.vy;
-    snake_body.position.set(cat.x,cat.y);
-   
+    snake_body.position.set(cat.x, cat.y);
+
 }
